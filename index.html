@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halloween Spooky Fun! 🎃</title>
+    <style>
+        body {
+            background-color: #1a0933;
+            color: #ffffff;
+            font-family: 'Tahoma', sans-serif;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #2a1b4e;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px #ff6600;
+        }
+        h1 { color: #ff6600; }
+        input {
+            width: 80%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #ff6600;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        button:hover {
+            background-color: #e65c00;
+            transform: scale(1.05);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #3b276b;
+            border-radius: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎃 เว็บบันทึกระดับความผี 👻</h1>
+        <p>ใส่ชื่อเพื่อนแล้วสแกนดูว่ามีความผีสิงอยู่กี่ %</p>
+        
+        <input type="text" id="friendName" placeholder="พิมพ์ชื่อเพื่อนตรงนี้...">
+        <br>
+        <button onclick="scanGhost()">สแกนวิญญาณทันที!</button>
+
+        <div id="resultBox" class="result">
+            <h2 id="resultTitle"></h2>
+            <p id="resultDetail"></p>
+        </div>
+    </div>
+
+    <script>
+        function scanGhost() {
+            const name = document.getElementById('friendName').value;
+            if (!name) {
+                alert('กรุณาใส่ชื่อเพื่อนก่อนครับ!');
+                return;
+            }
+
+            const percent = Math.floor(Math.random() * 101);
+            const ghostTypes = [
+                "ผีปอบชอบกินชาเย็น", 
+                "ผีเสื้อราตรีขี้เกียจตื่นเช้า", 
+                "ผีเจ้าที่แต่ออกไปซื้อขนม", 
+                "ผีสิงตู้เย็น", 
+                "ผีไม่มักเธอ แต่มักเรา"
+            ];
+            const randomType = ghostTypes[Math.floor(Math.random() * ghostTypes.length)];
+
+            document.getElementById('resultTitle').innerText = `ผลสแกนของ ${name}`;
+            document.getElementById('resultDetail').innerHTML = `
+                ระดับความผี: <strong>${percent}%</strong><br>
+                ฉายาผีประจำตัว: <strong>${randomType}</strong>
+            `;
+            document.getElementById('resultBox').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
