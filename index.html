@@ -5,98 +5,285 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halloween Spooky Fun! 🎃</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
-            background-color: #1a0933;
+            background-color: #120524;
             color: #ffffff;
             font-family: 'Tahoma', sans-serif;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             padding: 20px;
-            margin: 0;
         }
         .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: #2a1b4e;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px #ff6600;
+            width: 100%;
+            max-width: 480px;
+            background: #21103e;
+            border: 2px solid #ff6600;
+            padding: 25px;
+            border-radius: 24px;
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.4);
+            text-align: center;
         }
-        h1 { color: #ff6600; }
-        input {
-            width: 80%;
-            padding: 10px;
+        .header-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #ff6600;
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            color: #d1c4e9;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .nav-btn {
+            background: #341b5e;
+            color: #ffffff;
+            border: 1px solid #ff6600;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .nav-btn:hover, .nav-btn.active-btn {
+            background: #ff6600;
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.6);
+        }
+        .card-body {
+            background: #2d1754;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #4a2885;
+        }
+        .section-title {
+            color: #ff8533;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px;
             border-radius: 10px;
             border: 2px solid #ff6600;
+            background: #1a0933;
+            color: #ffffff;
             font-size: 16px;
             text-align: center;
             margin-bottom: 15px;
+            outline: none;
         }
-        button {
-            background-color: #ff6600;
-            color: white;
+        .action-btn {
+            width: 100%;
+            background: #ff5500;
+            color: #ffffff;
             border: none;
-            padding: 12px 24px;
-            font-size: 18px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
             border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
+            transition: transform 0.1s ease, background 0.2s ease;
         }
-        button:hover {
-            background-color: #e65c00;
-            transform: scale(1.05);
+        .action-btn:active {
+            transform: scale(0.98);
         }
-        .result {
-            margin-top: 20px;
+        .action-btn:hover {
+            background: #e64a00;
+        }
+        .result-box {
+            margin-top: 15px;
             padding: 15px;
-            background: #3b276b;
+            background: #190a33;
             border-radius: 10px;
+            border-left: 4px solid #ff6600;
+            text-align: left;
             display: none;
+        }
+        .sound-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .sound-btn {
+            background: #44227c;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .sound-btn:hover {
+            background: #5b2ea6;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active-tab {
+            display: block;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>🎃 เว็บบันทึกระดับความผี 👻</h1>
-        <p>ใส่ชื่อเพื่อนแล้วสแกนดูว่ามีความผีสิงอยู่กี่ %</p>
-        
-        <input type="text" id="friendName" placeholder="พิมพ์ชื่อเพื่อนตรงนี้...">
-        <br>
-        <button onclick="scanGhost()">สแกนวิญญาณทันที!</button>
+        <div class="header-icon">👻 🎃 🦇</div>
+        <h1>HALLOWEEN PARTY SPOOKY FUN!</h1>
+        <p class="subtitle">เว็บวัดระดับความกลัว คำสาปฮาๆ และดวงผีหลอกประจำแก๊งเพื่อน</p>
 
-        <div id="resultBox" class="result">
-            <h2 id="resultTitle"></h2>
-            <p id="resultDetail"></p>
+        <!-- ปุ่มเมนูหลัก -->
+        <div class="nav-buttons">
+            <button class="nav-btn active-btn" onclick="openTab(event, 'tab-scan')">👻 เครื่องสแกนผี</button>
+            <button class="nav-btn" onclick="openTab(event, 'tab-curse')">⚡ สุ่มคำสาปฮาๆ</button>
+            <button class="nav-btn" onclick="openTab(event, 'tab-tarot')">🔮 ทายดวงผีหลอก</button>
+            <button class="nav-btn" onclick="openTab(event, 'tab-sound')">🔊 เอฟเฟกต์เสียงกวน</button>
+        </div>
+
+        <div class="card-body">
+            <!-- 1. เครื่องสแกนผี -->
+            <div id="tab-scan" class="tab-content active-tab">
+                <h2 class="section-title">🧪 เครื่องสแกนระดับความเปรี้ยว & ผีในตัว</h2>
+                <p style="font-size: 13px; color: #b39ddb; margin-bottom: 12px;">ใส่ชื่อเพื่อนแล้วสแกนดูว่าซ่อนผีอะไรไว้ข้างใน!</p>
+                <input type="text" id="friendName" placeholder="เช่น บอย, ออสสติน, เจ๊สมศรี...">
+                <button class="action-btn" onclick="scanGhost()">⚡ สแกนวิญญาณทันที!</button>
+                <div id="scanResult" class="result-box"></div>
+            </div>
+
+            <!-- 2. สุ่มคำสาปฮาๆ -->
+            <div id="tab-curse" class="tab-content">
+                <h2 class="section-title">⚡ หม้อต้มสุ่มคำสาปฮาประจำวัน</h2>
+                <p style="font-size: 13px; color: #b39ddb; margin-bottom: 12px;">กดเพื่อรับคำสาปฮาๆ ไปส่งแกล้งเพื่อนในกลุ่ม</p>
+                <button class="action-btn" onclick="randomCurse()">🧪 ต้มคำสาปทันที!</button>
+                <div id="curseResult" class="result-box"></div>
+            </div>
+
+            <!-- 3. ทายดวงผีหลอก -->
+            <div id="tab-tarot" class="tab-content">
+                <h2 class="section-title">🔮 เปิดไพ่ทายดวงสยองขวัญ</h2>
+                <select id="tarotSelect">
+                    <option value="ผีปอบกระซิบรัก">ไพ่ใบที่ 1: ผีปอบกระซิบรัก</option>
+                    <option value="แวมไพร์ชานมไข่มุก">ไพ่ใบที่ 2: แวมไพร์ชานมไข่มุก</option>
+                    <option value="ซอมบี้วิชาคณิตศาสตร์">ไพ่ใบที่ 3: ซอมบี้วิชาคณิตศาสตร์</option>
+                    <option value="ผีเจ้าที่สั่งเดลิเวอรี่">ไพ่ใบที่ 4: ผีเจ้าที่สั่งเดลิเวอรี่</option>
+                </select>
+                <button class="action-btn" onclick="openTarot()">🔮 เปิดคำทำนายดวง!</button>
+                <div id="tarotResult" class="result-box"></div>
+            </div>
+
+            <!-- 4. เอฟเฟกต์เสียงกวน -->
+            <div id="tab-sound" class="tab-content">
+                <h2 class="section-title">🔊 ปุ่มกดเสียงหลอกเพื่อน</h2>
+                <div class="sound-grid">
+                    <button class="sound-btn" onclick="playSound('Scream')">😱 เสียงกรี๊ดดด</button>
+                    <button class="sound-btn" onclick="playSound('Laugh')">😈 เสียงหัวเราะผี</button>
+                    <button class="sound-btn" onclick="playSound('Thunder')">🌩️ เสียงฟ้าผ่า</button>
+                    <button class="sound-btn" onclick="playSound('Door')">🚪 เสียงประตูครืดๆ</button>
+                </div>
+                <div id="soundResult" class="result-box" style="text-align: center;"></div>
+            </div>
         </div>
     </div>
 
     <script>
+        // เปลี่ยนแท็บเมนู
+        function openTab(evt, tabId) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active-tab");
+            }
+            tablinks = document.getElementsByClassName("nav-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active-btn");
+            }
+            document.getElementById(tabId).classList.add("active-tab");
+            evt.currentTarget.classList.add("active-btn");
+        }
+
+        // 1. สแกนผี
         function scanGhost() {
-            const name = document.getElementById('friendName').value;
+            const name = document.getElementById('friendName').value.trim();
             if (!name) {
-                alert('กรุณาใส่ชื่อเพื่อนก่อนครับ!');
+                alert('กรุณาพิมพ์ชื่อเพื่อนก่อนสแกนครับ!');
                 return;
             }
-
             const percent = Math.floor(Math.random() * 101);
             const ghostTypes = [
-                "ผีปอบชอบกินชาเย็น", 
-                "ผีเสื้อราตรีขี้เกียจตื่นเช้า", 
-                "ผีเจ้าที่แต่ออกไปซื้อขนม", 
-                "ผีสิงตู้เย็น", 
-                "ผีไม่มักเธอ แต่มักเรา"
+                "ผีปอบชอบกินชาเย็นหวาน 100%", 
+                "ผีเสื้อราตรี ขี้เกียจตื่นสายตลอดกาล", 
+                "ผีเจ้าที่แต่ออกไปนั่งกินขนมข้างนอก", 
+                "ผีสิงตู้เย็น ชอบเปิดดูแล้วไม่กินอะไร", 
+                "ผีไม่มักเธอ แต่มักเรา",
+                "ผีเด็กหลังห้อง ชอบส่งสติ๊กเกอร์ฮาๆ"
             ];
             const randomType = ghostTypes[Math.floor(Math.random() * ghostTypes.length)];
-
-            document.getElementById('resultTitle').innerText = `ผลสแกนของ ${name}`;
-            document.getElementById('resultDetail').innerHTML = `
-                ระดับความผี: <strong>${percent}%</strong><br>
-                ฉายาผีประจำตัว: <strong>${randomType}</strong>
+            const resBox = document.getElementById('scanResult');
+            resBox.style.display = 'block';
+            resBox.innerHTML = `
+                <strong style="color: #ff8533; font-size: 16px;">ผลสแกนวิญญาณของ: ${name}</strong><br><br>
+                👻 ระดับความผีสิง: <strong>${percent}%</strong><br>
+                🏷️ ฉายาประจำตัว: <strong>${randomType}</strong>
             `;
-            document.getElementById('resultBox').style.display = 'block';
+        }
+
+        // 2. สุ่มคำสาป
+        function randomCurse() {
+            const curses = [
+                "พรุ่งนี้ตื่นมาจะเจอแต่วิชาคณิตศาสตร์ยากๆ 3 คาบติด!",
+                "เดินไปหยิบของในห้อง แล้วจะลืมว่ามาหยิบอะไร!",
+                "โทรศัพท์แบตจะหมดเหลือ 1% ตอนกำลังสแกนจ่ายเงิน!",
+                "สั่งชาไข่มุกหวานน้อย แต่จะได้หวานร้อยตลอดไป!",
+                "นิ้วก้อยเท้าจะเดินไปชนเก้าอี้ตอนกลางคืน!"
+            ];
+            const randomCurse = curses[Math.floor(Math.random() * curses.length)];
+            const resBox = document.getElementById('curseResult');
+            resBox.style.display = 'block';
+            resBox.innerHTML = `<span style="color:#ff6600;">⚡ คำสาปของคุณ:</span><br>"${randomCurse}"`;
+        }
+
+        // 3. ทายดวงผี
+        function openTarot() {
+            const card = document.getElementById('tarotSelect').value;
+            const fortunes = {
+                "ผีปอบกระซิบรัก": "ช่วงนี้จะเนื้อหอมเป็นพิเศษ แต่ระวังคนคุยจะหายตัวไปแบบไร้ร่องรอย!",
+                "แวมไพร์ชานมไข่มุก": "ระวังโรคทรัพย์จางจากการเดินเข้าร้านน้ำหวานบ่อยเกินไป!",
+                "ซอมบี้วิชาคณิตศาสตร์": "ดวงการเรียนกำลังจะดีขึ้น แต่สมองจะเบลอทันทีเมื่อเห็นข้อสอบ!",
+                "ผีเจ้าที่สั่งเดลิเวอรี่": "ดวงมีลาภปาก จะมีคนเอาขนมอร่อยๆ มาเลี้ยงถึงที่!"
+            };
+            const resBox = document.getElementById('tarotResult');
+            resBox.style.display = 'block';
+            resBox.innerHTML = `
+                <strong style="color:#ff8533;">🔮 คำทำนายไพ่ [${card}]:</strong><br><br>
+                ${fortunes[card]}
+            `;
+        }
+
+        // 4. เล่นเสียงจำลอง
+        function playSound(type) {
+            const resBox = document.getElementById('soundResult');
+            resBox.style.display = 'block';
+            resBox.innerHTML = `🔊 กำลังเปิดเสียง: <strong>${type}!</strong> (เอฟเฟกต์เสียงจำลอง)`;
         }
     </script>
-
 </body>
 </html>
